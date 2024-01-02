@@ -3,7 +3,7 @@
 pragma solidity ^0.8.19;
 
 contract EventTickets {
-    uint256 numberOfTickets;
+    uint8 numberOfTickets;
     uint256 ticketPrice;
     uint256 ticketAmount;
     uint256 availableForMint;
@@ -31,7 +31,8 @@ contract EventTickets {
     }
 
     modifier staffOnly {
-        require((msg.sender == projectOwner | msg.sender = staff), "Only admin or staff can make this request");
+        require(msg.sender == projectOwner, "Only admin or staff can make this request");
+        require(msg.sender == staff, "Only admin or staff can make this request");
         _;
     }
 
@@ -75,19 +76,19 @@ contract EventTickets {
         
         uint256 mintDate = block.timestamp;
         uint256 amountPaid = qtty * ticketPrice;
-        uint256 ticketId = numberOfTickets;
+        uint8 ticketId = numberOfTickets;
 
         availableForMint = ticketAmount - qtty;
 
         tickets[ticketId] = Tickets(
             ticketId, 
-            block.timestamp,
+            mintDate,
             amountPaid,
             msg.sender
         );
     }
 
-    function scanTicket (uint256 id, address owner) public staffOnly {
-        require(tickets[id] != 0, "Invalid ticket ID");
-    }
+    // function scanTicket (uint8 id, address owner) public staffOnly {
+    //     require(tickets[id] != Tickets(id, , , msg.sender),"Invalid ticket ID");
+    // }
 }
